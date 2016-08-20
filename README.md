@@ -13,14 +13,14 @@ bad: this=command
 good:
   this: command
 ```
-- When a module does requires '=' parameters, use the following:
+- When a module does require '=' parameters, use the following:
 
 ```yaml
 moduleX:
   args:
     var: 'something'
 ```
-- When a module does calls something using '=' parameters, use the following:
+- When a module does call something using '=' parameters, use the following:
 
 ```yaml
 moduleX: >
@@ -42,7 +42,8 @@ roles:
 	- Every variable on a new line for readability.
 	- Role must be a complete basic implementation without requiring further variables.
 	- Role must be idempotent, meaning: including the role must result in OK, not changed or error when nothing has been changed on the target host.
-	- Try to stow everything in `main.yml`, only use include when it makes sense.
+	- Try to stow everything in `main.yml`, only use include when it makes sense, which is:
+		- when you need to support multiple platforms, then include each in `main.yml`
 	- Use of comments indicate bad code.
 - Completeness (especially idempotency) on the target platform is preferred over portability when starting out a new role.
 - Don't use: `backup: yes`, rely on git instead!
