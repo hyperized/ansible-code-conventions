@@ -1,10 +1,10 @@
 # ansible-code-conventions
-My guide on how to write effective and fault tolerant Ansible code.
+A guide on how to write effective and fault tolerant Ansible code.
 
 Ansible code convention:
 
 - Descriptions are not capitalized
-- Every indentation is two spaces
+- The indentation is 2 (two) spaces, for vim you can use [vim-ansible-yaml](https://github.com/chase/vim-ansible-yaml)
 - Use dict notation, not in-line, this prevents errors later on, example:
 
 ```yaml
@@ -13,10 +13,17 @@ bad: this=command
 good:
   this: command
 ```
-- When a module does requires '=' paramenters, use the following:
+- When a module does require '=' parameters, use the following:
 
 ```yaml
-module: >
+moduleX:
+  args:
+    var: 'something'
+```
+- When a module does call something using '=' parameters, use the following:
+
+```yaml
+moduleX: >
   var='something'
 ```
 
@@ -28,14 +35,15 @@ roles:
 ```
 - Roles should be used for functional blocks.
     - All templates must contain a `{{ ansible_managed }}` header.
-    - Ensure `ansible_managed` header is staticly set in `ansible.cfg` or it breaks idempotence.
-	- Every role has a self documenting defaults/main.yml file that contains all set-table variables.
+    - Ensure `ansible_managed` header is statically set in `ansible.cfg` or it breaks idempotency.
+	- Every role has a self documenting `defaults/main.yml` file that contains all set-able variables.
 	- All variables in the role scope must be named `role_variable` with the option of spaces being replaced by `_` hyphens.
 	- The use of dict style variable settings `role.variable` is discouraged as it complicates overriding.
 	- Every variable on a new line for readability.
-	- Role must be a complete basic imlementation without requiring further variables.
+	- Role must be a complete basic implementation without requiring further variables.
 	- Role must be idempotent, meaning: including the role must result in OK, not changed or error when nothing has been changed on the target host.
-	- Try to stow everything in main.yml, only use include when it makes sense.
+	- Try to stow everything in `main.yml`, only use include when it makes sense, which is:
+		- when you need to support multiple platforms, then include each in `main.yml`
 	- Use of comments indicate bad code.
 - Completeness (especially idempotency) on the target platform is preferred over portability when starting out a new role.
-- Dont use: `backup: yes`, rely on git instead!
+- Don't use: `backup: yes`, rely on git instead!
