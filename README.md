@@ -26,6 +26,16 @@ moduleX:
 moduleX: >
   var='something'
 ```
+- When dealing with multiple `when` conditions:
+
+```
+- name: do task
+  command: echo hello world!
+  when:
+    - (skip_install != True)
+    - (ansible_os_family == 'Debian')
+    - (command_result.changed == True)
+```
 
 - Playbooks should be used for role assignments.
 	- Use tagging to call a role:
