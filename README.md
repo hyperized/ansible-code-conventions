@@ -28,7 +28,7 @@ moduleX: >
 ```
 - When dealing with multiple `when` conditions:
 
-```
+```yaml
 - name: do task
   command: echo hello world!
   when:
@@ -39,7 +39,7 @@ moduleX: >
 
 - Playbooks should be used for role assignments.
 	- Use tagging to call a role:
-```
+```yaml
 roles:
   - { role: myrole, tags: ['myrole', 'optional_alias_myrole'] }
 ```
