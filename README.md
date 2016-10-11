@@ -4,6 +4,11 @@ A guide on how to write effective and fault tolerant Ansible code.
 Ansible code convention:
 
 - Descriptions are not capitalized
+
+```yaml
+- name: ensuring something
+```
+
 - The indentation is 2 (two) spaces, for vim you can use [vim-ansible-yaml](https://github.com/chase/vim-ansible-yaml)
 - Use dict notation, not in-line, this prevents errors later on, example:
 
@@ -26,16 +31,6 @@ moduleX:
 moduleX: >
   var='something'
 ```
-- When dealing with multiple `when` conditions:
-
-```yaml
-- name: do task
-  command: echo hello world!
-  when:
-    - (skip_install != True)
-    - (ansible_os_family == 'Debian')
-    - (command_result.changed == True)
-```
 
 - Playbooks should be used for role assignments.
 	- Use tagging to call a role:
@@ -57,3 +52,38 @@ roles:
 	- Use of comments indicate bad code.
 - Completeness (especially idempotency) on the target platform is preferred over portability when starting out a new role.
 - Don't use: `backup: yes`, rely on git instead!
+
+## How-to `when` conditions
+
+General rule for `when` conditions is that variables do not have to be surrounded like `{{ var }}`. Below are some general use-cases for when conditions:
+
+- When dealing with multiple suitors for a single condition:
+
+```yaml
+- set_fact:
+    hello: 'world'
+
+- name: do task
+  command: echo hello world!
+  when:
+    - hello | intersect( ['world', 'universe'] )
+```
+- When dealing with multiple `when` conditions that need to match in an `OR` fashion:
+
+```yaml
+- name: do task
+  command: echo hello world!
+  when:
+    - ((skip_install != True) or (ansible_os_family == 'Debian'))
+```
+
+- When dealing with multiple `when` conditions that need to match in an `AND` fashion:
+
+```yaml
+- name: do task
+  command: echo hello world!
+  when:
+    - (skip_install != True)
+    - (ansible_os_family == 'Debian')
+    - (command_result.changed == True)
+```
