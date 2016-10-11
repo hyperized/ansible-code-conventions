@@ -34,10 +34,12 @@ moduleX: >
 
 - Playbooks should be used for role assignments.
 	- Use tagging to call a role:
+
 ```yaml
 roles:
   - { role: myrole, tags: ['myrole', 'optional_alias_myrole'] }
 ```
+
 - Roles should be used for functional blocks.
     - All templates must contain a `{{ ansible_managed }}` header.
     - Ensure `ansible_managed` header is statically set in `ansible.cfg` or it breaks idempotency.
@@ -87,3 +89,4 @@ General rule for `when` conditions is that variables do not have to be surrounde
     - (ansible_os_family == 'Debian')
     - (command_result.changed == True)
 ```
+
